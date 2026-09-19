@@ -1,10 +1,92 @@
+<div align="center">
+
+<img src="static/favicon.svg" alt="Repo Observatory logo" width="64" height="64">
+
 # Repo Observatory
 
-A self-hosted GitHub issue and pull request workspace, extracted from Cache Observatory. It tracks open issues, PRs, RFCs, ownership, reviews, merge conflicts, and current-commit CI. The original dashboard layout is retained.
+**A clearer view of engineering.**
 
-Python 3.10+ and the standard library are sufficient at runtime. Node is only needed for verification. No LLM or external translation service is used by default.
+Issues, pull requests, reviews, and CI.<br>
+One focused workspace for the work worth following.
+
+[![Tests](https://github.com/alphabetc1/repo-observatory/actions/workflows/tests.yml/badge.svg)](https://github.com/alphabetc1/repo-observatory/actions/workflows/tests.yml)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square)
+![Runtime dependencies: zero](https://img.shields.io/badge/runtime_dependencies-0-15803d?style=flat-square)
+![Languages: English and Chinese](https://img.shields.io/badge/languages-EN_%2F_%E4%B8%AD%E6%96%87-0e7490?style=flat-square)
+
+[Explore the UI](#in-action) · [Try it locally](#try-the-demo) · [Quick start](#run-locally) · [Configure a workspace](#configuration)
+
+</div>
+
+<br>
+
+[![Repo Observatory desktop workspace in English](docs/images/desktop-en.png)](docs/images/desktop-en.png)
+
+<p align="center"><sub>The SGLang cache profile, shown with recorded public test data. Screenshots are demonstrations, not live repository status.</sub></p>
+
+## Less tab-hopping. More context.
+
+Follow the modules you maintain without piecing together an issue tracker, PR list, and CI dashboard. Repo Observatory brings the evidence into one self-hosted workspace.
+
+| Find the work | Understand the evidence | Follow it through |
+| --- | --- | --- |
+| Configurable module matching | Source excerpts and editorial notes | Assignees and requested reviewers |
+| Issue, PR, and RFC filters | Explained rule-based priorities | Draft and merge-conflict state |
+| Time, owner, and priority filters | Report completeness signals | CI tied to the current PR commit |
+
+**Lightweight by design.** Python's standard library at runtime. Static HTML, JavaScript, and CSS. JSON snapshots and SQLite accounts. No frontend build step, external database, or mandatory AI service.
+
+## In action
+
+### From a headline to the evidence
+
+Open an entry to inspect the original report, priority reasoning, evidence signals, and follow-up status without losing your place.
+
+[![Issue detail with source context, priority reasoning, and evidence signals](docs/images/detail-en.png)](docs/images/detail-en.png)
+
+### English or Chinese. Desktop or phone.
+
+Switch the interface language while preserving the original GitHub text. The same workspace adapts to smaller screens.
+
+<details>
+<summary><strong>See the Chinese workspace</strong></summary>
+
+<br>
+
+[![Repo Observatory desktop workspace in Chinese](docs/images/desktop-zh.png)](docs/images/desktop-zh.png)
+
+</details>
+
+<details>
+<summary><strong>See the mobile workspace</strong></summary>
+
+<br>
+
+<p align="center">
+  <a href="docs/images/mobile-390-en.png"><img src="docs/images/mobile-390-en.png" alt="English workspace on a 390-pixel mobile viewport" width="320"></a>
+</p>
+
+</details>
+
+<br>
+
+The screenshots show **Cache Observatory**, the original SGLang profile. Configure another repository and its modules to make the workspace your own. Each instance watches one repository; multiple repositories use separate instances.
+
+## Try the demo
+
+**No GitHub token required.** Preview the real interface using the included public fixtures:
+
+```sh
+git clone https://github.com/alphabetc1/repo-observatory.git
+cd repo-observatory
+python3 tests/serve_fixture.py
+```
+
+Open the local URL printed by the command. Demo data is temporary and removed when the process exits normally. This is a local preview, not a live GitHub sync.
 
 ## Run locally
+
+Requires **Python 3.10+**. For live collection, authenticate the GitHub CLI with `gh auth login`, then run from the repository directory:
 
 ```sh
 export OBSERVATORY_CONFIG="$PWD/configs/sglang.json"
@@ -30,6 +112,8 @@ Choose **中文 / English** in the dashboard sidebar or account pages. The prefe
 `locales/en.json` contains application-copy translations. The server renders the existing HTML/JS assets in the selected language without duplicating the UI. JSON localization only touches application-owned fields. Stylesheets and the dashboard structure are preserved; only the language control is added.
 
 ## Optional analysis interface
+
+**An extension point, not an AI feature claim.** The built-in triage uses rules. LLM analysis is opt-in, disabled by default, and has no bundled provider.
 
 `analysis.py` defines `Analyzer.analyze(AnalysisRequest) -> AnalysisResult`. Set `analyzer` to a **trusted local** `module:factory` to opt in. The factory returns an analyzer. No vendor SDK, model, network endpoint, API key, or paid call is configured.
 
@@ -57,3 +141,9 @@ npm run test:browser
 ```
 
 The browser test starts temporary local servers and uses sanitized, recorded public GitHub fixture data. It exercises both languages, details, filters, responsive layouts, and the real invitation/login boundary without contacting a deployed instance. Screenshots are written to gitignored `artifacts/`.
+
+Curated screenshots and their publication rules are documented in [docs/images/README.md](docs/images/README.md).
+
+---
+
+<p align="center"><strong>Evidence before conclusions. Keep status current.</strong><br><sub>Built from Cache Observatory. Configurable beyond cache.</sub></p>
