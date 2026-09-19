@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>Cache Observatory · SGLang</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/auth.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a href="/" class="brand"><img src="/favicon.svg" alt="" width="36" height="36"><span>Cache Observatory<small>SGLANG ENGINEERING</small></span></a>
+    <div class="workspace-label">WORKSPACE <span>01</span></div>
+    <nav aria-label="缓存模块">
+      <button class="module-button active" data-module="all"><span class="nav-icon">◫</span><span>全部动态</span><span class="nav-count" id="count-all">—</span></button>
+      <div class="nav-caption">MODULES</div>
+      <button class="module-button" data-module="hicache"><span class="module-dot hicache"></span><span>HiCache</span><span class="nav-count" id="count-hicache">—</span></button>
+      <button class="module-button" data-module="unified"><span class="module-dot unified"></span><span>Unified Radix Cache</span><span class="nav-count" id="count-unified">—</span></button>
+      <button class="module-button" data-module="hisparse"><span class="module-dot hisparse"></span><span>HiSparse</span><span class="nav-count" id="count-hisparse">—</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="source-card"><span class="source-symbol">⌘</span><div>来自 GitHub<small>sgl-project / sglang</small></div><span class="source-live"></span></div>
+      <button id="method-button" class="quiet-button">收录范围与判断依据 <span>↗</span></button>
+      <div class="sidebar-foot">A clearer view of cache engineering.</div>
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb">SGLang <span>/</span> <strong>Cache Observatory</strong></div><div class="live-badge"><span></span> 条目每 3 小时同步</div></header>
+    <main>
+      <section class="page-heading">
+        <div><div class="eyebrow">THE CACHE WORKSPACE</div><h1 id="page-title">缓存工作台<span class="heading-dot">.</span></h1><p id="page-description">从问题到改进，持续关注缓存系统的每一步。</p></div>
+        <div class="time-picker" role="group" aria-label="创建时间范围"><button data-window="week" class="selected">一周内</button><button data-window="month">一个月内</button><button data-window="sixmonths">六个月内</button></div>
+      </section>
+      <div class="sync-line"><span id="sync-icon" class="sync-dot"></span><span id="sync-text">正在读取最新快照…</span><span class="sync-separator">·</span><span id="next-sync">只展示 Open 条目</span><button id="refresh-button" title="重新读取服务器快照" aria-label="重新读取服务器快照">↻</button></div>
+      <div id="status-banner" class="status-banner" role="status" hidden></div>
+      <section class="overview" aria-label="当前范围概览">
+        <div class="stat-card"><div class="stat-top"><span>开放条目</span><span class="stat-glyph">↗</span></div><div class="stat-value" id="stat-total">—</div><div class="stat-caption">当前时间与模块范围</div></div>
+        <div class="stat-card"><div class="stat-top"><span>优先关注</span><span class="priority-mini">P0 / P1</span></div><div class="stat-value" id="stat-urgent">—</div><div class="stat-caption">正确性与服务可用性</div></div>
+        <div class="stat-card"><div class="stat-top"><span>推进中的 PR</span><span class="stat-glyph lavender">⑂</span></div><div class="stat-value" id="stat-pr">—</div><div class="stat-caption">修复、优化与实现</div></div>
+        <div class="stat-card"><div class="stat-top"><span>设计讨论</span><span class="stat-glyph sage">◇</span></div><div class="stat-value" id="stat-rfc">—</div><div class="stat-caption">RFC · 下一步的可能性</div></div>
+      </section>
+      <section class="entries-section" aria-label="条目列表">
+        <div class="entries-heading"><div class="type-tabs" role="group" aria-label="条目类型"><button class="selected" data-type="all">全部 <span id="tab-all">—</span></button><button data-type="issue">Issues <span id="tab-issue">—</span></button><button data-type="pr">Pull requests <span id="tab-pr">—</span></button><button data-type="rfc">RFC <span id="tab-rfc">—</span></button></div><span class="open-only"><span></span> OPEN ONLY</span></div>
+        <div class="filter-bar"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索标题、说明或 #编号" aria-label="搜索条目"><kbd>/</kbd></label><label class="select-wrap"><select id="priority-filter" aria-label="优先级筛选"><option value="all">全部优先级</option><option value="P0">P0 · 正确性</option><option value="P1">P1 · 可用性</option><option value="P2">P2 · 性能</option><option value="P3">P3 · 能力 / 观测</option></select></label><label class="select-wrap sort-select"><select id="sort" aria-label="排序方式"><option value="priority">优先级排序</option><option value="updated">最近更新</option><option value="created">最新创建</option><option value="confidence">置信度优先</option></select></label></div>
+        <div class="workflow-filters"><label class="select-wrap"><select id="followup-filter" aria-label="跟进状态筛选"><option value="all">全部跟进状态</option><option value="unassigned">未分配</option><option value="conflict">有冲突</option><option value="base_failed">Base CI 失败</option><option value="review_required">待评审</option><option value="changes_requested">需修改</option><option value="draft">Draft</option></select></label><label class="owner-search"><span>负责人</span><input id="owner-filter" placeholder="搜索 @用户名" aria-label="负责人筛选"></label><span class="workflow-interval">跟进状态每 30 分钟更新</span></div>
+        <div class="list-meta"><span id="result-count" aria-live="polite">正在加载…</span><span>点击条目，查看说明与证据 <span class="meta-arrow">↘</span></span></div>
+        <div id="entries" class="entry-list" aria-live="polite"><div class="loading-state"><span class="loading-ring"></span> 正在整理缓存动态</div></div>
+        <div id="pagination" class="pagination" hidden><button id="previous-page">← 上一页</button><span id="page-info"></span><button id="next-page">下一页 →</button></div>
+      </section>
+      <footer class="page-footer"><span>Cache Observatory <span class="footer-divider">/</span> Built for SGLang</span><span>证据先于结论，状态保持新鲜。</span></footer>
+    </main>
+  </div>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-toolbar"><span id="detail-eyebrow"></span><button class="close-dialog" aria-label="关闭详情">×</button></div><div id="detail-content"></div></dialog>
+  <dialog id="method-dialog" aria-labelledby="method-title"><div class="dialog-toolbar"><span>ABOUT THE OBSERVATORY</span><button class="close-dialog" aria-label="关闭说明">×</button></div><div class="method-content"><h2 id="method-title">清晰呈现，也保留判断的边界。</h2><div id="method-body"></div></div></dialog>
+</body>
+</html>

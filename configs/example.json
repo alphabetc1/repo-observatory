@@ -1,0 +1,12 @@
+{
+  "repository": "example/project",
+  "title": "Repo Observatory",
+  "workflow": "ci.yml",
+  "workflow_event": "pull_request",
+  "default_language": "en",
+  "modules": {
+    "scheduler": {"name": "Scheduler", "pattern": "scheduler|scheduling"},
+    "kernel": {"name": "Kernels", "pattern": "kernel|cuda"}
+  },
+  "analyzer": null
+}

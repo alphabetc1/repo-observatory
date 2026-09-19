@@ -1,0 +1,176 @@
+[
+  {
+    "__typename": "PullRequest",
+    "number": 38803,
+    "state": "OPEN",
+    "updatedAt": "2026-09-10T06:35:45Z",
+    "assignees": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    },
+    "isDraft": false,
+    "headRefOid": "a507d9c7162bbd4009776a6c211b9d4f808f29a0",
+    "baseRefName": "main",
+    "mergeable": "MERGEABLE",
+    "reviewDecision": "REVIEW_REQUIRED",
+    "reviewRequests": {
+      "nodes": [
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "merrymercy"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "Ying1123"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "hnyls2002"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "xiezhq-hermann"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "hanming-lu"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "yizhang2077"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "hzh0425"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "ispobock"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "alphabetc1"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "huangtingwei9988"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "ping1jing2"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "iforgetmyname"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "whybeyoung"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    },
+    "latestReviews": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    }
+  },
+  {
+    "__typename": "Issue",
+    "number": 38485,
+    "state": "OPEN",
+    "updatedAt": "2026-09-08T10:34:07Z",
+    "assignees": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    }
+  },
+  {
+    "__typename": "PullRequest",
+    "number": 38494,
+    "state": "OPEN",
+    "updatedAt": "2026-09-08T18:55:36Z",
+    "assignees": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    },
+    "isDraft": false,
+    "headRefOid": "e99fdb521552ea2abb12dad0f10f0305a9c9f216",
+    "baseRefName": "main",
+    "mergeable": "UNKNOWN",
+    "reviewDecision": "REVIEW_REQUIRED",
+    "reviewRequests": {
+      "nodes": [
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "merrymercy"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "Ying1123"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "hnyls2002"
+          }
+        },
+        {
+          "requestedReviewer": {
+            "__typename": "User",
+            "login": "xiezhq-hermann"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    },
+    "latestReviews": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false
+      }
+    }
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "number": 38477,
+  "title": "[Bug] FP8 MHA hybrid model crashes: HybridLinearAttnBackend has no forward_metadata",
+  "body": "## Summary\nWith `--kv-cache-dtype fp8_e4m3` on a hybrid GLM-5 model, the first DSA prefill with extend/cached-prefix data crashes because `_get_mla_kv_buffer_from_fp8_for_dsa` tries to read `backend.forward_metadata.page_table_1_flattened` from `HybridLinearAttnBackend`, which does not expose `forward_metadata`.\n\n## Environment\n- Branch/commit: 654df43cbee108a81fa1736c34ba8c701f199285 (fork `long10024070/sglang`)\n- Hardware: AMD MI350X / gfx950\n- Model: amd/GLM-5.3-Flash-Quark-MXFP4\n- Server args: `--dp-size 4 --tp-size 1 --attention-backend dsa --dsa-prefill-backend tilelang --dsa-decode-backend tilelang --linear-attn-backend triton --moe-runner-backend aiter --kv-cache-dtype fp8_e4m3`\n\n## Stack trace\n- `hybrid_linear_attn_backend.py`: `get_attn_backend()` returns `HybridLinearAttnBackend` wrapper for a hybrid model.\n- `forward_mha.py:500` in `_get_mla_kv_buffer_from_fp8_for_dsa`: `backend.forward_metadata.page_table_1_flattened`\n- Error: `AttributeError: 'HybridLinearAttnBackend' object has no attribute 'forward_metadata'`\n\n## Proposed fix\nUnwrap the hybrid wrapper exactly like the existing `TboAttnBackend` unwrap:\n\n```python\nif isinstance(backend, HybridLinearAttnBackend):\n    backend = backend.full_attn_backend\nkv_indices = backend.forward_metadata.page_table_1_flattened\n```\n\nThe full-attn child owns the DSA `forward_metadata` and `page_table_1_flattened`.\n\n## Validation\nAfter the fix, the same server successfully completed deterministic generation, structured reasoning, tool-call round trip, and native protocol canary on gfx950.\n",
+  "state": "closed",
+  "html_url": "https://github.com/sgl-project/sglang/issues/38477",
+  "created_at": "2026-09-08T09:37:16Z",
+  "updated_at": "2026-09-08T13:32:09Z",
+  "user": {
+    "login": "long10024070",
+    "id": 45379462,
+    "node_id": "MDQ6VXNlcjQ1Mzc5NDYy",
+    "avatar_url": "https://avatars.githubusercontent.com/u/45379462?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/long10024070",
+    "html_url": "https://github.com/long10024070",
+    "followers_url": "https://api.github.com/users/long10024070/followers",
+    "following_url": "https://api.github.com/users/long10024070/following{/other_user}",
+    "gists_url": "https://api.github.com/users/long10024070/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/long10024070/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/long10024070/subscriptions",
+    "organizations_url": "https://api.github.com/users/long10024070/orgs",
+    "repos_url": "https://api.github.com/users/long10024070/repos",
+    "events_url": "https://api.github.com/users/long10024070/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/long10024070/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [],
+  "comments": 0,
+  "fixture_fetched_at": "2026-09-10"
+}

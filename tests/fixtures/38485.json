@@ -1,0 +1,33 @@
+{
+  "number": 38485,
+  "title": "[Bug] ReplaySSM CPU backup/restore loses pending accepted updates",
+  "body": "## Checklist\n\n- [x] I searched related issues but found no solution.\n- [ ] The bug persists in the latest version.\n- [x] Issues without environment info and a minimal reproducible demo are hard to resolve and may receive no feedback.\n- [x] If this is not a bug report but a general question, please start a discussion at https://github.com/sgl-project/sglang/discussions. Otherwise, it will be closed.\n- [x] Please use English. Otherwise, it will be closed.\n\n## Describe the bug\n\nCPU retraction loses accepted GDN ReplaySSM updates when those updates are still in the request's replay ring. Backup copies the checkpoint and convolution state; reallocating the request clears the replay cursor before restore.\n\nThis is a development-branch regression following [#35544](https://github.com/sgl-project/sglang/pull/35544). Main `cf35384fe459dfcddb228ffae4dfac2465d2c6da` still omits pending history from backup. Release `v0.5.19` is unaffected: it folds every accepted window and lacks the deferred-state path. Reproduced on `ccf9fe6590ee7437005d8353c3c67d2dc4d25fcb`; the later main revision above was not executed.\n\nThe restored logical state should equal the checkpoint plus every accepted replay update. Four of six regression cases fail, including both backup routes and wrapped rings. Cases without pending history pass.\n\nThe same loss occurs during real prefill/decode serving with Qwen3.5-0.8B and natural KV-pressure retractions. Before the fix, two of four restores differed from the pre-backup state; after the fix, all four matched. This comparison measures recurrent state, not text quality.\n\n## Reproduction\n\nIn a source installation of SGLang `ccf9fe6590ee7437005d8353c3c67d2dc4d25fcb` with the dependencies below, download only the regression test:\n\n```sh\ncurl -fL https://raw.githubusercontent.com/1sgtpepper/sglang/8062a14b42ef51e6428ed541a646ed9dd8039444/test/registered/unit/managers/test_retraction_replayssm_state.py -o test_retraction_replayssm_state.py\nPYTHONPATH=\"$PWD/python\" python3 test_retraction_replayssm_state.py\n```\n\nThis GPU test requires no server or model weights. It runs the real backup, row release/reallocation and restore operations, comparing the restored state with an independent float64 sequential recurrence. Expected: all six cases pass. Observed: four numerical assertion failures. Materializing pending updates before backup makes all six pass; restoring the old code restores the same four failures.\n\n## Environment\n\nNVIDIA L4, driver 580.95.05, Ubuntu container on Modal, Linux x86_64. The source checkout is loaded through `PYTHONPATH`; `sglang: Module Not Found` below refers to distribution metadata.\n\nOutput of `python3 -m sglang.check_env`:\n\n<details>\n<summary>Full environment output</summary>\n\n```text\nPython: 3.12.1 (main, Jan  8 2024, 04:46:10) [Clang 17.0.6 ]\nCUDA available: True\nGPU 0: NVIDIA L4\nGPU 0 Compute Capability: 8.9\nCUDA_HOME: /opt/cuda\nNVCC: Cuda compilation tools, release 13.0, V13.0.88\nCUDA Driver Version: 580.95.05\nPyTorch: 2.13.0+cu130\nsglang: Module Not Found\nsglang-kernel: 0.4.6.post1\nflashinfer_python: 0.6.18\nflashinfer_cubin: 0.6.18\nflashinfer_jit_cache: 0.6.18+cu130\ntriton: 3.7.1\ntransformers: 5.12.1\ntorchao: Module Not Found\nnumpy: 2.3.5\naiohttp: 3.14.3\nfastapi: 0.141.1\nhuggingface_hub: 1.30.0\ninteregular: 0.3.3\nmodelscope: 1.39.1\norjson: 3.12.0\noutlines: 0.1.11\npackaging: 26.3\npsutil: 7.2.2\npydantic: 2.13.5\npython-multipart: 0.0.32\npyzmq: 27.2.0\nuvicorn: 0.52.4\nuvloop: 0.22.1\nvllm: Module Not Found\nxgrammar: 0.2.1\nopenai: 2.6.1\ntiktoken: 0.14.0\nanthropic: 1.4.0\nlitellm: Module Not Found\ntorchcodec: 0.15.0+cu130\nNVIDIA Topology: \n\tGPU0\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\nGPU0\t X \t\t\t\tN/A\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks\n\nHypervisor vendor:: KVM\nulimit soft: 1048576\n```\n\n</details>\n",
+  "state": "open",
+  "html_url": "https://github.com/sgl-project/sglang/issues/38485",
+  "created_at": "2026-09-08T10:34:07Z",
+  "updated_at": "2026-09-08T10:34:07Z",
+  "user": {
+    "login": "1sgtpepper",
+    "id": 165563006,
+    "node_id": "U_kgDOCd5Kfg",
+    "avatar_url": "https://avatars.githubusercontent.com/u/165563006?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/1sgtpepper",
+    "html_url": "https://github.com/1sgtpepper",
+    "followers_url": "https://api.github.com/users/1sgtpepper/followers",
+    "following_url": "https://api.github.com/users/1sgtpepper/following{/other_user}",
+    "gists_url": "https://api.github.com/users/1sgtpepper/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/1sgtpepper/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/1sgtpepper/subscriptions",
+    "organizations_url": "https://api.github.com/users/1sgtpepper/orgs",
+    "repos_url": "https://api.github.com/users/1sgtpepper/repos",
+    "events_url": "https://api.github.com/users/1sgtpepper/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/1sgtpepper/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [],
+  "comments": 0,
+  "fixture_fetched_at": "2026-09-10"
+}

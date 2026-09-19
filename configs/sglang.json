@@ -1,0 +1,7 @@
+{
+  "repository": "sgl-project/sglang",
+  "workflow": "pr-test.yml",
+  "workflow_event": "pull_request",
+  "default_language": "zh-CN",
+  "analyzer": null
+}
